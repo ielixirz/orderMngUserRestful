@@ -65,7 +65,8 @@ app.post('/createUser', (req, res) => {
                             password: req.body.password,
                             branch_number: req.body.branch_number,
                             branch_name: req.body.branch_name,
-                            user_name: req.body.user_name
+                            user_name: req.body.user_name,
+                            type: req.body.type
                         });
                     res.send("created")
                 } else {
@@ -87,7 +88,8 @@ app.post('/updateUser', (req, res) => {
                     $set: {
                         branch_number: req.body.branch_number,
                         branch_name: req.body.branch_name,
-                        user_name: req.body.user_name
+                        user_name: req.body.user_name,
+                        type: req.body.type
                     }
                 },
                 (err, result) => {
