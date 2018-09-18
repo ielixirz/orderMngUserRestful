@@ -5,7 +5,7 @@ const app = express();
 const crypto = require('crypto-js');
 const aes = require('crypto-js/aes');
 
-const dburl = "mongodb://admingo:rootmongoisus@206.189.91.233:27017/ordermng";
+const dburl = "mongodb://ordermngadmin:rootorderisus@206.189.91.233:27017/ordermng";
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
