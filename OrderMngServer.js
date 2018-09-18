@@ -8,7 +8,9 @@ const aes = require('crypto-js/aes');
 const dburl = "mongodb://206.189.91.233:27017/ordermng";
 
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.urlencoded({
+    extended: true
+}))
 
 app.use(function (req, res, next) {
 
@@ -40,12 +42,13 @@ app.post('/auth', (req, res) => {
 
         var dbo = db.db("ordermng");
         dbo.collection('user')
-            .findOne({ username: req.body.username }, (err, result) => {
+            .findOne({
+                username: req.body.username
+            }, (err, result) => {
                 var authUser = result;
                 if (authUser === null) {
                     res.send("no_user_found")
-                }
-                else if (authUser.password === req.body.password) {
+                } else if (authUser.password === req.body.password) {
                     authUser.password = null;
                     res.send(authUser)
                 } else {
@@ -63,7 +66,17 @@ app.get('/user', (req, res) => {
         var dbo = db.db("ordermng");
         dbo.collection('user')
             // .find({}).toArray((err, result) => {
-            .find({}, { fields: { password: 0 } }).toArray((err, result) => {
+            .find({
+                'role': {
+                    $not: {
+                        $eq: 'admin'
+                    }
+                }
+            }, {
+                fields: {
+                    password: 0
+                }
+            }).toArray((err, result) => {
                 res.send(result)
             })
     });
@@ -77,7 +90,9 @@ app.post('/createUser', (req, res) => {
         var dbo = db.db("ordermng");
 
         dbo.collection('user')
-            .findOne({ username: req.body.username }, (err, result) => {
+            .findOne({
+                username: req.body.username
+            }, (err, result) => {
                 if (result === null) {
                     dbo.collection('user')
                         .insertOne({
@@ -103,8 +118,9 @@ app.post('/updateUser', (req, res) => {
 
         var dbo = db.db("ordermng");
         dbo.collection('user')
-            .findOneAndUpdate({ username: req.body.username },
-                {
+            .findOneAndUpdate({
+                    username: req.body.username
+                }, {
                     $set: {
                         branch_number: req.body.branch_number,
                         branch_name: req.body.branch_name,
@@ -126,7 +142,9 @@ app.post('/deleteUser', (req, res) => {
 
         var dbo = db.db("ordermng");
         dbo.collection('user')
-            .findOneAndDelete({ username: req.body.username },
+            .findOneAndDelete({
+                    username: req.body.username
+                },
                 (err, result) => {
                     if (err) return res.send(err)
                     res.send(result)
