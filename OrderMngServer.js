@@ -67,7 +67,7 @@ app.get('/user', (req, res) => {
         dbo.collection('user')
             // .find({}).toArray((err, result) => {
             .find({
-                'role': {
+                'type': {
                     $not: {
                         $eq: 'admin'
                     }
